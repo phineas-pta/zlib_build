@@ -17,6 +17,8 @@ jobs:
         repository: madler/zlib
         path: zlib
 
+    - uses: ilammy/msvc-dev-cmd@v1
+
     - name: Generate project files
       run: cmake -S zlib -B build
 
