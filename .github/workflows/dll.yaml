@@ -1,0 +1,30 @@
+name: 🖥️ 🛠️ 📦
+on:
+  push:
+    tags:
+    - '*'
+jobs:
+
+  zlib:
+    name: 🪟 Build zlib dll
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        repository: madler/zlib
+        path: zlib
+
+    - name: Generate project files
+      run: cmake -S zlib -B build
+
+    - name: Compile source code
+      working-directory: build
+      run: msbuild ALL_BUILD.vcxproj -noLogo -maxCpuCount -property:Configuration=Release
+
+    - uses: svenstaro/upload-release-action@v2
+      with:
+        file_glob: true
+        file: build/Release/zlib*
